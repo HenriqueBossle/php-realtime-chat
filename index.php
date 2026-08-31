@@ -1,11 +1,12 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Realtime chat app</title>
-    <link rel="stylesheet" href="css/style.css">
-</head>
+<?php 
+
+    session_start();
+
+    if(isset($_SESSION['unique_id'])){
+        header("location: users.php");
+    }
+
+?>
 
 <?php include_once "header.php"; ?>
 
@@ -13,6 +14,7 @@
     
     <div class="wrapper">
         <section class="form signup">
+            <header>Realtime chat app</header>
             <form action="#" method="post" enctype="multipart/form-data" autocomplete="off">
                 <div class="error-text"></div>
                 <div class="name details">

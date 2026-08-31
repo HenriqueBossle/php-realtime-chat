@@ -40,11 +40,11 @@ $img_name = $_FILES['image']['name'];
 $img_type = $_FILES['image']['type'];
 $tmp_name = $_FILES['image']['tmp_name'];
 $img_ext = strtolower(pathinfo($img_name, PATHINFO_EXTENSION));
-$extensions = ["jpeg", "png", "jpg"];
-$types = ["image/jpeg", "image/jpg", "image/png"];
+$extensions = ["jpeg", "png", "jpg", "webp"];
+$types = ["image/jpeg", "image/jpg", "image/png", "image/webp"];
 
 if(!in_array($img_ext, $extensions, true) || !in_array($img_type, $types, true)){
-    exit("Please upload an image file - jpg, jpeg or png");
+    exit("Please upload an image file - jpg, jpeg, png or webp");
 }
 
 $new_img_name = time() . $img_name;

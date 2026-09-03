@@ -63,6 +63,8 @@ include_once "header.php";
     </section>
 </div>
 
+<script src="js/chat.js"></script>
+
 </body>
 
 

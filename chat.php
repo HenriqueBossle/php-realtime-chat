@@ -5,6 +5,7 @@ require_once __DIR__ . "/php/config.php";
 
 if(!isset($_SESSION['unique_id'])){
     header("location: login.php");
+    exit;
 }
 ?>
 
@@ -19,7 +20,7 @@ include_once "header.php";
         <header>
 
             <?php 
-                $user_id = mysqli_real_escape_string($conn, $_GET['user_id']);
+                /*$user_id = mysqli_real_escape_string($conn, $_GET['user_id']);
 
                 $sql = mysqli_query($conn, "SELECT * FROM users WHERE unique_id = {$user_id}");
 
@@ -27,7 +28,21 @@ include_once "header.php";
                     $row = mysqli_fetch_assoc($sql);
                 }else{
                     header("location: users.php");
+                    exit;
+                }*/
+
+                $stmt = mysqli_prepare($conn, "SELECT * FROM users WHERE unique_id = ?");
+                mysqli_stmt_bind_param($stmt, "s", $_GET['user_id']);
+                mysqli_stmt_execute($stmt);
+                $sql = mysqli_stmt_get_result($stmt);
+                if(mysqli_num_rows($sql) > 0){
+                    $row = mysqli_fetch_assoc($sql);
+                    $user_id = $row['unique_id'];
+                }else{
+                    header("location: users.php");
+                    exit;
                 }
+
             ?>
 
             <a href="users.php" class="back-icon" aria-label="Voltar"><i class="fas fa-arrow-left"></i></a>
@@ -36,8 +51,8 @@ include_once "header.php";
                 <span class="online-dot"></span>
             </div>
             <div class="details">
-                <span><?php echo $row['fname'] . " " . $row['lname']?></span>
-                <p><span class="status-indicator"></span><?php echo $row['status'] ?></p>
+                <span><?php echo htmlspecialchars($row['fname'] . " " . $row['lname'])?></span>
+                <p><span class="status-indicator"></span><?php echo htmlspecialchars($row['status']) ?></p>
             </div>
         </header>
 
@@ -49,10 +64,6 @@ include_once "header.php";
             <div class="chat outgoing">
                 
             </div>
-
-            
-
-            
         </div>
 
         <form action="#" class="typing-area">

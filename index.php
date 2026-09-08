@@ -4,6 +4,7 @@
 
     if(isset($_SESSION['unique_id'])){
         header("location: users.php");
+        exit;
     }
 
 ?>
@@ -30,7 +31,7 @@
             
                 <div class="field input">
                     <label for="email">Email Address</label>
-                    <input type="text" name="email" id="email" placeholder="Enter your email" required>
+                    <input type="email" name="email" id="email" placeholder="Enter your email" required>
                 </div>
 
                 <div class="field input">

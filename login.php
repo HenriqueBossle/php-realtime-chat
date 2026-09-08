@@ -13,11 +13,11 @@
     <div class="wrapper">
         <section class="form login">
             <header>Realtime Chat App</header>
-            <form action="#" method="post" enctype="multipart/form-data" autocomplete="off">
+            <form action="#" method="post" autocomplete="off">
                 <div class="error text"></div>
                 <div class="field input">
                     <label>Email Address</label>
-                    <input type="text" name="email" placeholder="Enter your email" required>
+                    <input type="email" name="email" placeholder="Enter your email" required>
                 </div>
 
                 <div class="field input">

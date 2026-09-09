@@ -3,7 +3,7 @@
 session_start();
 
 require_once __DIR__ . "/config.php";
-require_once __DIR__ ."/search.php";
+
 
 if(!$conn){
     http_response_code(500);
@@ -11,30 +11,64 @@ if(!$conn){
 }
 
 while($row = mysqli_fetch_assoc($query)){
-    $sql2 = "SELECT * FROM messages WHERE (incoming_msg_id = {$row['unique_id']} OR outgoing_msg_id = {$row['unique_id']} AND outgoing_msg_id = {$outgoing_id} OR incoming_msg_id = {$outgoing_id}) ORDER BY msg_id DESC LIMIT 1";
+    $unique_id = (int) $row['unique_id'];
+    $sql2 = "SELECT * FROM messages
+         WHERE (
+             (incoming_msg_id = {$unique_id} AND outgoing_msg_id = {$outgoing_id})
+             OR
+             (outgoing_msg_id = {$unique_id} AND incoming_msg_id = {$outgoing_id})
+         )
+         ORDER BY msg_id DESC
+         LIMIT 1";
 
     $query2 = mysqli_query($conn, $sql2);
     $row2 = mysqli_fetch_assoc($query2);
-    (mysqli_num_rows($query) > 0) ? $result = $row['msg'] : $result = "No message availble";
-    (strlen($result) > 28) ? $msg = substr($result, 0, 28) . '...' : $msg = $result;
-
-    if(isset($row['unique_id'])){
-        ($outgoing_id == $row2['outgoing_msg_id']) ? $you = "You: " : $you = "";
-    }else{
-        $you = "";
+     if ($row2) {
+        $result = $row2['msg'];
+    } else {
+        $result = "No message available";
     }
 
-    ($row['status'] == "Offline now") ? $offline = "offline" : $offline = "";
-    ($outgoing_id == $row['unique_id']) ? $hid_me = "hide" : $hid_me = "";
+    $msg = strlen($result) > 28
+        ? substr($result, 0, 28) . '...'
+        : $result;
 
-    $output .= '<a href="chat.php?user_id='.$row['unique_id'].'">
-        <div class="content">
-            <img src="php/images/'.$row['img'].'" alt="">
-            <div class="details">
-                <span>'.$row['fname']."" . $row['lname'] . '</span>
-                <p>' . $you . $msg . '</p>
+    $you = "";
+
+    if ($row2 && $outgoing_id == $row2['outgoing_msg_id']) {
+        $you = "You: ";
+    }
+
+    $offline = ($row['status'] == "Offline now")
+        ? "offline"
+        : "";
+
+    $name = htmlspecialchars(
+        $row['fname'] . " " . $row['lname'],
+        ENT_QUOTES,
+        'UTF-8'
+    );
+
+    $image = htmlspecialchars(
+        $row['img'],
+        ENT_QUOTES,
+        'UTF-8'
+    );
+
+
+     $output .= '
+        <a href="chat.php?user_id=' . $unique_id . '">
+            <div class="content">
+                <img src="php/images/' . $image . '" alt="">
+                <div class="details">
+                    <span>' . $name . '</span>
+                    <p>' . $you . htmlspecialchars($msg, ENT_QUOTES, 'UTF-8') . '</p>
+                </div>
             </div>
-        </div>
-        <div class="status-dot ' . $offline . ' "><i class="fas fa-circle"></i></div>
-    </a>';
+
+            <div class="status-dot ' . $offline . '">
+                <i class="fas fa-circle"></i>
+            </div>
+        </a>
+    ';
 }

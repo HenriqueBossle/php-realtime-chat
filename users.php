@@ -14,6 +14,8 @@ include_once "header.php";
 ?>
 
 
+
+
     <body>
     
         <div class="wrapper">
@@ -24,7 +26,14 @@ include_once "header.php";
                             $sql = mysqli_query($conn, "SELECT * FROM users WHERE unique_id = {$_SESSION['unique_id']}");
                             if(mysqli_num_rows($sql) > 0){
                                 $row = mysqli_fetch_assoc($sql);
+
+                                $sql_online = mysqli_query($conn, "SELECT COUNT(*) AS online_count FROM users WHERE status = 'Online'");
+                                $online_data = mysqli_fetch_assoc($sql_online);
+                                $online_count = $online_data['online_count'] ?? 0;
+                            
                             }
+
+                        
                         ?>
                         <div class="avatar-wrap">
                             <img src="php/images/<?php echo $row['img']?>" alt="Foto de perfil">
@@ -45,7 +54,7 @@ include_once "header.php";
                         <span class="eyebrow">Sua rede</span>
                         <h1>Conversas</h1>
                     </div>
-                    <span class="conversation-count">0 online</span>
+                    <span class="conversation-count"><?php echo $online_count; ?> online</span>
                 </div>
 
                 <div class="search">

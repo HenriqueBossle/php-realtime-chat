@@ -31,8 +31,14 @@ include_once "header.php";
                     exit;
                 }*/
 
+                if(!isset($_GET['user_id']) || !ctype_digit($_GET['user_id'])){
+                    header("location: users.php");
+                    exit;
+                }
+                $id_user = (int) $_GET['user_id'];
+
                 $stmt = mysqli_prepare($conn, "SELECT * FROM users WHERE unique_id = ?");
-                mysqli_stmt_bind_param($stmt, "s", $_GET['user_id']);
+                mysqli_stmt_bind_param($stmt, "i", $id_user);
                 mysqli_stmt_execute($stmt);
                 $sql = mysqli_stmt_get_result($stmt);
                 if(mysqli_num_rows($sql) > 0){
@@ -47,12 +53,12 @@ include_once "header.php";
 
             <a href="users.php" class="back-icon" aria-label="Voltar"><i class="fas fa-arrow-left"></i></a>
             <div class="avatar-wrap">
-                <img src="php/images/<?php echo $row['img']?>" alt="Foto de perfil de <?php echo $row['fname'] . ' ' . $row['lname']?>">
+                <img src="php/images/<?php echo htmlspecialchars($row['img'], ENT_QUOTES, 'UTF-8')?>" alt="Foto de perfil de <?php echo htmlspecialchars($row['fname'] . ' ' . $row['lname'], ENT_QUOTES, 'UTF-8')?>">
                 <span class="online-dot"></span>
             </div>
             <div class="details">
-                <span><?php echo htmlspecialchars($row['fname'] . " " . $row['lname'])?></span>
-                <p><span class="status-indicator"></span><?php echo htmlspecialchars($row['status']) ?></p>
+                <span><?php echo htmlspecialchars($row['fname'] . " " . $row['lname'], ENT_QUOTES, 'UTF-8')?></span>
+                <p><span class="status-indicator"></span><?php echo htmlspecialchars($row['status'], ENT_QUOTES, 'UTF-8') ?></p>
             </div>
         </header>
 

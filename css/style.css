@@ -327,11 +327,11 @@ body::after{
     border: 1px solid rgba(255, 255, 255, .3);
     border-radius: 8px;
     color: #fff;
-    transition: background .2s ease, transform .2s ease;
+    transition: background .2s ease;
 }
 
 .users .logout:hover{
-    background: rgba(255, 255, 255, .15);
+    background: rgba(241, 0, 0, 0.15);
     transform: translateX(2px);
 }
 
@@ -405,12 +405,10 @@ body::after{
     padding: 15px 4px;
     border-bottom: 1px solid #e4eeee;
     color: #173042;
-    transition: background .2s ease, padding .2s ease;
+    transition: background .2s ease, transform .2s ease;
 }
 
 .user-result:hover{
-    padding-right: 10px;
-    padding-left: 10px;
     border-radius: 8px;
     background: #f3f9f8;
 }
@@ -484,12 +482,10 @@ body::after{
     padding: 14px 4px;
     border-bottom: 1px solid #e4eeee;
     color: #173042;
-    transition: background .2s ease, padding .2s ease;
+    transition: background .2s ease;
 }
 
 .users-list > a:not(.user-result):hover{
-    padding-right: 10px;
-    padding-left: 10px;
     border-radius: 8px;
     background: #f3f9f8;
 }

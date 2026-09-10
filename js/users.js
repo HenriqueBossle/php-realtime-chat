@@ -36,16 +36,18 @@ searchBar.onkeyup = () => {
     xhr.send("searchTerm=" + encodeURIComponent(searchTerm));
 }
 
+let lastData = "";
+
 setInterval(() => {
     let xhr = new XMLHttpRequest();
     xhr.open("GET", "php/users.php", true);
     xhr.onload = () => {
-        if(xhr.readyState === XMLHttpRequest.DONE){
-            if(xhr.status === 200){
-                let data = xhr.response;
-                if(!searchBar.classList.contains("active")){
-                    usersList.innerHTML = data;
-                }
+        if(xhr.readyState === XMLHttpRequest.DONE && xhr.status === 200){
+            let data = xhr.response;
+            console.log("mudou?", data !== lastData); // ← teste
+            if(!searchBar.classList.contains("active") && data !== lastData){
+                lastData = data;
+                usersList.innerHTML = data;
             }
         }
     }

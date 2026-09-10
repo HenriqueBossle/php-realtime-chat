@@ -1,13 +1,18 @@
 <?php
 
-session_start();
+if (!isset($conn)) {
+    session_start();
+    require_once __DIR__ . "/config.php";
+}
 
-require_once __DIR__ . "/config.php";
-require_once __DIR__ . "/users.php";
+if (!isset($query)) {
+    $outgoing_id = (int) $_SESSION['unique_id'];
+    $sql = "SELECT * FROM users WHERE NOT unique_id = {$outgoing_id} ORDER BY user_id DESC";
+    $query = mysqli_query($conn, $sql);
+}
 
-if(!$conn){
-    http_response_code(500);
-    exit("Database connection failed: " . mysqli_connect_error());
+if (!isset($outgoing_id)) {
+    $outgoing_id = (int) $_SESSION['unique_id'];
 }
 
 while($row = mysqli_fetch_assoc($query)){

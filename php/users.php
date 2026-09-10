@@ -6,11 +6,16 @@ require_once __DIR__ . "/config.php";
 
 $outgoing_id = $_SESSION['unique_id'];
 
-$sql = "SELECT * FROM users WHERE NOT unique_id = {$outgoing_id} ORDER BY user_id DESC";
+$stmt = mysqli_prepare($conn, "SELECT * FROM users WHERE NOT unique_id = ? ORDER BY user_id DESC");
 
-$query = mysqli_query($conn, $sql);
+mysqli_stmt_bind_param($stmt, "i", $outgoing_id);
+
+mysqli_stmt_execute($stmt);
+
+$query = mysqli_stmt_get_result($stmt);
 
 $output = "";
+
 
 if (mysqli_num_rows($query) == 0) {
     $output .= "No users are available to chat";

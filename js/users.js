@@ -44,7 +44,6 @@ setInterval(() => {
     xhr.onload = () => {
         if(xhr.readyState === XMLHttpRequest.DONE && xhr.status === 200){
             let data = xhr.response;
-            console.log("mudou?", data !== lastData); // ← teste
             if(!searchBar.classList.contains("active") && data !== lastData){
                 lastData = data;
                 usersList.innerHTML = data;

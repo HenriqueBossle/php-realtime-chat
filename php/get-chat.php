@@ -38,7 +38,7 @@ if(isset($_SESSION['unique_id'])){
             }
         }
     }else{
-        $output .= '<div class="text">No messages are available</div>';
+        $output .= '<div class="text">Você ainda não tem mensagens com esse usuário.</div>';
     }
     echo $output;
 }else{

@@ -50,7 +50,7 @@
                 </div>
             </form>
 
-            <div class="link">Already signed up? <a href="login.php">Login now</a> </div>
+            <div class="link">Já tem conta? <a href="login.php">Entrar</a> </div>
         </section>
     </div>
 

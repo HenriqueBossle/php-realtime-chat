@@ -3,7 +3,7 @@
 session_start();
 
 require_once __DIR__ . "/config.php";
-
+require_once __DIR__ . "/users.php";
 
 if(!$conn){
     http_response_code(500);
@@ -26,7 +26,7 @@ while($row = mysqli_fetch_assoc($query)){
      if ($row2) {
         $result = $row2['msg'];
     } else {
-        $result = "No message available";
+        $result = "Sem mensagens.";
     }
 
     $msg = strlen($result) > 28

@@ -25,7 +25,7 @@ include_once "header.php";
 
                                 $sql_online = mysqli_query($conn, "SELECT COUNT(*) AS online_count FROM users WHERE status = 'Online'");
                                 $online_data = mysqli_fetch_assoc($sql_online);
-                                $online_count = $online_data['online_count'] ?? 0;
+                                $online_count = $online_data['online_count'] - 1 ?? 0;
                             
                             }
 
@@ -50,7 +50,7 @@ include_once "header.php";
                         <span class="eyebrow">Sua rede</span>
                         <h1>Conversas</h1>
                     </div>
-                    <span class="conversation-count"><?php echo $online_count; ?> online</span>
+                    <span class="conversation-count">Você mais <?php echo $online_count; ?> pessoas estão online</span>
                 </div>
 
                 <div class="search">

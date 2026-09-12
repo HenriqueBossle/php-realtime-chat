@@ -19,14 +19,27 @@ include_once "header.php";
                 <header>
                     <div class="content">
                         <?php 
-                            $sql = mysqli_query($conn, "SELECT * FROM users WHERE unique_id = {$_SESSION['unique_id']}");
+                            $row = null;
+                            $online_count = 0;
+                            $user_id = (int) $_SESSION['unique_id'];
+                            $stmt = mysqli_prepare($conn, "SELECT * FROM users WHERE unique_id = ?");
+                            mysqli_stmt_bind_param($stmt, "i", $user_id);
+                            mysqli_stmt_execute($stmt);
+                            $sql = mysqli_stmt_get_result($stmt);
                             if(mysqli_num_rows($sql) > 0){
                                 $row = mysqli_fetch_assoc($sql);
 
-                                $sql_online = mysqli_query($conn, "SELECT COUNT(*) AS online_count FROM users WHERE status = 'Online'");
+                                $stmt_online = mysqli_prepare($conn, "SELECT COUNT(*) AS online_count FROM users WHERE status = ?");
+                                $online_status = "Online";
+                                mysqli_stmt_bind_param($stmt_online, "s", $online_status);
+                                mysqli_stmt_execute($stmt_online);
+                                $sql_online = mysqli_stmt_get_result($stmt_online);
                                 $online_data = mysqli_fetch_assoc($sql_online);
-                                $online_count = $online_data['online_count'] - 1 ?? 0;
+                                $online_count = max(0, (int) ($online_data['online_count'] ?? 0) - 1);
                             
+                            } else {
+                                header("location: login.php");
+                                exit;
                             }
 
                         

@@ -4,14 +4,19 @@ session_start();
 
 require_once __DIR__ . "/config.php";
 
-$outgoing_id = $_SESSION['unique_id'];
-$searchTerm = mysqli_real_escape_string($conn, $_POST['searchTerm'] ?? '');
+$outgoing_id = (int) $_SESSION['unique_id'];
+$searchTerm = trim($_POST['searchTerm'] ?? '');
 
-$sql = "SELECT * FROM users WHERE NOT unique_id = {$outgoing_id} AND (fname LIKE '%{$searchTerm}%' OR lname LIKE '%{$searchTerm}%') ORDER BY fname, lname";
+$stmt = mysqli_prepare($conn, "SELECT * FROM users
+        WHERE NOT unique_id = ?
+            AND (fname LIKE CONCAT('%', ?, '%') OR lname LIKE CONCAT('%', ?, '%'))
+        ORDER BY fname, lname");
+mysqli_stmt_bind_param($stmt, "iss", $outgoing_id, $searchTerm, $searchTerm);
+mysqli_stmt_execute($stmt);
+$query = mysqli_stmt_get_result($stmt);
 
 $output = "";
 
-$query = mysqli_query($conn, $sql);
 if(mysqli_num_rows($query) > 0){
     while($row = mysqli_fetch_assoc($query)){
         $name = htmlspecialchars($row['fname'] . " " . $row['lname'], ENT_QUOTES, 'UTF-8');

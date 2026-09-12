@@ -16,15 +16,16 @@ if (!$conn) {
 
 // Verifica se o logout_id foi enviado
 if (isset($_GET['logout_id'])) {
-    
-    $logout_id = mysqli_real_escape_string($conn, $_GET['logout_id']);
+    $logout_id = filter_input(INPUT_GET, 'logout_id', FILTER_VALIDATE_INT);
     
     // Segurança: só permite deslogar o próprio usuário
     if ($logout_id == $_SESSION['unique_id']) {
         
         $status = "Offline now";
         
-        $sql = mysqli_query($conn, "UPDATE users SET status = '{$status}' WHERE unique_id = '{$logout_id}'");
+        $stmt = mysqli_prepare($conn, "UPDATE users SET status = ? WHERE unique_id = ?");
+        mysqli_stmt_bind_param($stmt, "si", $status, $logout_id);
+        $sql = mysqli_stmt_execute($stmt);
         
         if ($sql) {
             // Limpa a sessão

@@ -7,8 +7,10 @@ if (!isset($conn)) {
 
 if (!isset($query)) {
     $outgoing_id = (int) $_SESSION['unique_id'];
-    $sql = "SELECT * FROM users WHERE NOT unique_id = {$outgoing_id} ORDER BY user_id DESC";
-    $query = mysqli_query($conn, $sql);
+    $stmt = mysqli_prepare($conn, "SELECT * FROM users WHERE NOT unique_id = ? ORDER BY user_id DESC");
+    mysqli_stmt_bind_param($stmt, "i", $outgoing_id);
+    mysqli_stmt_execute($stmt);
+    $query = mysqli_stmt_get_result($stmt);
 }
 
 if (!isset($outgoing_id)) {
@@ -17,16 +19,18 @@ if (!isset($outgoing_id)) {
 
 while($row = mysqli_fetch_assoc($query)){
     $unique_id = (int) $row['unique_id'];
-    $sql2 = "SELECT * FROM messages
+    $stmt2 = mysqli_prepare($conn, "SELECT * FROM messages
          WHERE (
-             (incoming_msg_id = {$unique_id} AND outgoing_msg_id = {$outgoing_id})
+             (incoming_msg_id = ? AND outgoing_msg_id = ?)
              OR
-             (outgoing_msg_id = {$unique_id} AND incoming_msg_id = {$outgoing_id})
+             (outgoing_msg_id = ? AND incoming_msg_id = ?)
          )
          ORDER BY msg_id DESC
-         LIMIT 1";
+         LIMIT 1");
+    mysqli_stmt_bind_param($stmt2, "iiii", $unique_id, $outgoing_id, $unique_id, $outgoing_id);
+    mysqli_stmt_execute($stmt2);
+    $query2 = mysqli_stmt_get_result($stmt2);
 
-    $query2 = mysqli_query($conn, $sql2);
     $row2 = mysqli_fetch_assoc($query2);
      if ($row2) {
         $result = $row2['msg'];

@@ -1,0 +1,8 @@
+# Bloquear acesso ao arquivo .env e composer
+<FilesMatch "^\.env|composer\.(json|lock)$">
+    Require all denied
+</FilesMatch>
+
+# Bloquear acesso à pasta vendor
+RewriteEngine On
+RewriteRule ^vendor/ - [F,L]

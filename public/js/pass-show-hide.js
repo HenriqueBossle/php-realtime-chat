@@ -6,7 +6,7 @@ toggleIcon.onclick = () =>{
         pswrdField.type = "text";
         toggleIcon.classList.add('active');
     }else{
-        pswrdField.type === "password";
+        pswrdField.type = "password";
         toggleIcon.classList.remove("active");
     }
 }

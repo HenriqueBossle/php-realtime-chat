@@ -28,14 +28,14 @@ if(isset($_SESSION['unique_id'])){
             if($row['outgoing_msg_id'] == $outgoing_id){
                 $output .= '<div class="chat outgoing">
                                 <div class="details">
-                                    <p>'. htmlspecialchars($row['msg']) .'</p>
+                                    <p>'. htmlspecialchars($row['msg'], ENT_QUOTES, 'UTF-8') .'</p>
                                 </div>
                             </div>';
             }else{
                 $output .= '<div class="chat incoming">
-                                <img src="php/images/'. $row['img'] .'" alt="">
+                                <img src="php/images/'. htmlspecialchars($row['img'], ENT_QUOTES, 'UTF-8') .'" alt="">
                                 <div class="details">
-                                    <p>'. htmlspecialchars($row['msg']) .'</p>
+                                    <p>'. htmlspecialchars($row['msg'], ENT_QUOTES, 'UTF-8') .'</p>
                                 </div>
                             </div>';
             }

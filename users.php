@@ -45,12 +45,12 @@ include_once "header.php";
                         
                         ?>
                         <div class="avatar-wrap">
-                            <img src="php/images/<?php echo $row['img']?>" alt="Foto de perfil">
+                            <img src="php/images/<?php echo htmlspecialchars($row['img'], ENT_QUOTES, 'UTF-8')?>" alt="Foto de perfil">
                             <span class="online-dot"></span>
                         </div>
                         <div class="details">
-                            <span><?php echo $row['fname'] . " " . $row['lname'] ?></span>
-                            <p><span class="status-indicator"></span><?php echo $row['status']?></p>
+                            <span><?php echo htmlspecialchars($row['fname'] . " " . $row['lname'], ENT_QUOTES, 'UTF-8')?></span>
+                            <p><span class="status-indicator"></span><?php echo htmlspecialchars($row['status'], ENT_QUOTES, 'UTF-8')?></p>
                         </div>
                         <a class="logout" href="php/logout.php?logout_id=<?php echo $_SESSION['unique_id']; ?>" aria-label="Sair">
                             <i class="fas fa-arrow-right-from-bracket"></i>

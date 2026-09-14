@@ -1,107 +1,139 @@
 <?php
 
-session_start();
+    session_start();
 
-require_once __DIR__ . "/config.php";
+    require_once __DIR__ . "/config.php";
 
-if(!$conn){
-    http_response_code(500);
-    exit("Database connection failed: " . mysqli_connect_error());
-}
+    require_once __DIR__ . "/logger.php";
 
-$fname = trim($_POST['fname'] ?? '');
-$lname = trim($_POST['lname'] ?? '');
-$email = trim($_POST['email'] ?? '');
-$password = $_POST['password'] ?? '';
+    if(!$conn){
+        logError("Database connection failed: " . mysqli_connect_error());
 
-if(empty($fname) || empty($lname) || empty($email) || empty($password)){
-    exit("All input are required!");
-}
+        http_response_code(500);
+        exit("Internal server error");
+    }
 
-if(!filter_var($email, FILTER_VALIDATE_EMAIL)){
-    exit("$email is not a valid email");
-}
+    $fname = trim($_POST['fname'] ?? '');
+    $lname = trim($_POST['lname'] ?? '');
+    $email = trim($_POST['email'] ?? '');
+    $password = $_POST['password'] ?? '';
 
-$stmt = mysqli_prepare($conn, "SELECT * FROM users WHERE email = ?");
-mysqli_stmt_bind_param($stmt, "s", $email);
-mysqli_stmt_execute($stmt);
-$sql = mysqli_stmt_get_result($stmt);
-if(!$sql){
-    http_response_code(500);
-    exit("Database query failed: " . mysqli_error($conn));
-}
+    if(empty($fname) || empty($lname) || empty($email) || empty($password)){
+        http_response_code(400);
+        exit("All input are required!");
+    }
 
-if(mysqli_num_rows($sql) > 0){
-    exit("$email = This email already exists");
-}
+    if(!filter_var($email, FILTER_VALIDATE_EMAIL)){
+        exit("$email is not a valid email");
+    }
 
-mysqli_stmt_close($stmt);
+    $stmt = mysqli_prepare($conn, "SELECT * FROM users WHERE email = ?");
 
-if(!isset($_FILES['image']) || $_FILES['image']['error'] !== UPLOAD_ERR_OK){
-    exit("Please select a valid image");
-}
+    if (!$stmt) {
+        logError("Failed to prepare user query: " . mysqli_error($conn));
 
-$tmp_name = $_FILES['image']['tmp_name'];
-$img_name = $_FILES['image']['name'];
+        http_response_code(500);
+        exit("Internal server error.");
+    }
 
-$img_info = getimagesize($tmp_name);
+    mysqli_stmt_bind_param($stmt, "s", $email);
 
-if($img_info === false){
-    exit("O upload não foi de uma imagem válida");
-}
+    if (!mysqli_stmt_execute($stmt)) {
+        logError("Failed to execute user query: " . mysqli_stmt_error($stmt));
 
-$mime_real = $img_info['mime'];
+        http_response_code(500);
+        exit("Internal server error.");
+    }
 
-$extensions = [
-    'image/jpeg' => 'jpg',
-    'image/png'  => 'png',
-    'image/webp' => 'webp',
-    'image/avif' => 'avif'
-];
+    $sql = mysqli_stmt_get_result($stmt);
 
-if (!isset($extensions[$mime_real])) {
-    exit("Tipo de imagem não válido, são aceitos apenas JPG, PNG, WEBP ou AVIF");
-}
+    if(!$sql){
+        logError("Failed to get query result: " . mysqli_error($conn));
 
-$img_ext = $extensions[$mime_real];
+        http_response_code(500);
+        exit("Internal server error.");
+    }
 
-$new_img_name = bin2hex(random_bytes(16)) . "." . $img_ext;
+    if (mysqli_num_rows($sql) > 0) {
+        exit("Email already registered");
+    }
 
-$image_dir = __DIR__ . "/images/";
+    mysqli_stmt_close($stmt);
 
-if (!is_dir($image_dir)) {
-    mkdir($image_dir, 0755, true);
-}
+    if(!isset($_FILES['image']) || $_FILES['image']['error'] !== UPLOAD_ERR_OK){
+        exit("Please select a valid image");
+    }
 
-$image_path = $image_dir . $new_img_name;
+    $tmp_name = $_FILES['image']['tmp_name'];
+    $img_name = $_FILES['image']['name'];
 
-if (!move_uploaded_file($tmp_name, $image_path)) {
-    exit("Não foi possivel salvar a imagem");
-}
+    $img_info = getimagesize($tmp_name);
 
-$ran_id = random_int(100000000, 999999999);
-$status = "Online";
-$encrypt_pass = password_hash($password, PASSWORD_DEFAULT);
-$stmt = mysqli_prepare($conn, "INSERT INTO users (unique_id, fname, lname, email, password, img, status) VALUES (?, ?, ?, ?, ?, ?, ?)");
+    if($img_info === false){
+        exit("O upload não foi de uma imagem válida");
+    }
 
-if (!$stmt) {
-    unlink($image_path);
-    http_response_code(500);
-    exit("Could not prepare database query");
-}
+    $mime_real = $img_info['mime'];
 
-mysqli_stmt_bind_param($stmt, "issssss", $ran_id, $fname, $lname, $email, $encrypt_pass, $new_img_name, $status);
+    $extensions = [
+        'image/jpeg' => 'jpg',
+        'image/png'  => 'png',
+        'image/webp' => 'webp',
+        'image/avif' => 'avif'
+    ];
 
-$insert_query = mysqli_stmt_execute($stmt);
+    if (!isset($extensions[$mime_real])) {
+        exit("Tipo de imagem não válido, são aceitos apenas JPG, PNG, WEBP ou AVIF");
+    }
 
-if(!$insert_query){
-    unlink($image_path);
-    http_response_code(500);
-    exit("Database insert failed: " . mysqli_error($conn));
-}
+    $img_ext = $extensions[$mime_real];
 
-mysqli_stmt_close($stmt);
+    $new_img_name = bin2hex(random_bytes(16)) . "." . $img_ext;
 
-$_SESSION['unique_id'] = $ran_id;
+    $image_dir = __DIR__ . "/images/";
 
-echo "success";
+    if (!is_dir($image_dir) && !mkdir($image_dir, 0755, true)) {
+        logError("Failed to create image directory: " . $image_dir);
+
+        http_response_code(500);
+        exit("Internal server error.");
+    }
+
+    $image_path = $image_dir . $new_img_name;
+
+    if (!move_uploaded_file($tmp_name, $image_path)) {
+        exit("Não foi possivel salvar a imagem");
+    }
+
+    $ran_id = random_int(100000000, 999999999);
+    $status = "Online";
+    $encrypt_pass = password_hash($password, PASSWORD_DEFAULT);
+    $stmt = mysqli_prepare($conn, "INSERT INTO users (unique_id, fname, lname, email, password, img, status) VALUES (?, ?, ?, ?, ?, ?, ?)");
+
+    if (!$stmt) {
+        unlink($image_path);
+
+        logError("Failed to prepare insert query: " . mysqli_error($conn));
+
+        http_response_code(500);
+        exit("Internal server error.");
+    }
+
+    mysqli_stmt_bind_param($stmt, "issssss", $ran_id, $fname, $lname, $email, $encrypt_pass, $new_img_name, $status);
+
+    $insert_query = mysqli_stmt_execute($stmt);
+
+    if (!$insert_query) {
+        logError("Failed to insert user: " . mysqli_stmt_error($stmt));
+
+        unlink($image_path);
+
+        http_response_code(500);
+        exit("Internal server error.");
+    }
+
+    mysqli_stmt_close($stmt);
+
+    $_SESSION['unique_id'] = $ran_id;
+
+    echo "success";

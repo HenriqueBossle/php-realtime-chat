@@ -2,9 +2,14 @@
 
 session_start();
 
-if (isset($_SESSION['unique_id'])) {
+require_once __DIR__ . "/../vendor/autoload.php";
+require_once __DIR__ . "/../src/config/database.php";
 
-    require_once __DIR__ . "/config.php";
+use App\Config\Database;
+
+$conn = Database::connection();
+
+if (isset($_SESSION['unique_id'])) {
 
     $outgoing_id = $_SESSION['unique_id'];
 

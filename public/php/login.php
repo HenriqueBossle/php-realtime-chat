@@ -2,9 +2,12 @@
 
     session_start();
 
-    require_once __DIR__ . "/config.php";
+    require_once __DIR__ . "/../vendor/autoload.php";
+    require_once __DIR__ . "/../src/config/database.php";
 
-    require_once __DIR__ . "/logger.php";
+    use App\Config\Database;
+
+    $conn = Database::connection();
 
     if (!$conn) {
         logError("Database connection failed: " . mysqli_connect_error());

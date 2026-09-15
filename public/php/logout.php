@@ -1,13 +1,19 @@
 <?php
 session_start();
 
+require_once __DIR__ . "/../vendor/autoload.php";
+require_once __DIR__ . "/../src/config/database.php";
+
+use App\Config\Database;
+
+$conn = Database::connection();
+
 // Se não estiver logado, manda pro login
 if (!isset($_SESSION['unique_id'])) {
     header("Location: ../login.php");
     exit();
 }
 
-require_once __DIR__ . "/config.php";
 
 if (!$conn) {
     http_response_code(500);

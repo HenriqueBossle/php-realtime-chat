@@ -2,8 +2,15 @@
 
 session_start();
 
+require_once __DIR__ . "/../vendor/autoload.php";
+require_once __DIR__ . "/../src/config/database.php";
+
+use App\Config\Database;
+
+$conn = Database::connection();
+
 if(isset($_SESSION['unique_id'])){
-    require_once __DIR__ . "/config.php";
+
 
     $outgoing_id = (int) $_SESSION['unique_id'];
     $incoming_id = filter_input(INPUT_POST, 'incoming_id', FILTER_VALIDATE_INT);

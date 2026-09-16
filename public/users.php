@@ -1,5 +1,10 @@
 <?php
     session_start();
+
+    error_reporting(E_ALL);
+    ini_set('display_errors', 1);
+
+
     require_once __DIR__ . "/../vendor/autoload.php";
     require_once __DIR__ . "/../src/config/database.php";
 
@@ -85,7 +90,7 @@ include_once "header.php";
             </section>
         </div>
 
-        <script type="text/javascript" src="js/users.js"></script>
+        <script type="text/javascript" src="assets/js/users.js"></script>
 
     </body>
 

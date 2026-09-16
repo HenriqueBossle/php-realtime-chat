@@ -54,7 +54,7 @@
         </section>
     </div>
 
-    <script type="text/javascript" src="js/pass-show-hide.js"></script>
-    <script type="text/javascript" src="js/signup.js"></script>
+    <script type="text/javascript" src="assets/js/pass-show-hide.js"></script>
+    <script type="text/javascript" src="assets/js/signup.js"></script>
 </body>
 </html>

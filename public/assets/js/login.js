@@ -16,6 +16,7 @@ form.onsubmit = (e) => {
             if (xhr.status === 200) {
 
                 let data = xhr.response;
+                console.log(data);
 
                 if (data === "success") {
                     location.href = "users.php";

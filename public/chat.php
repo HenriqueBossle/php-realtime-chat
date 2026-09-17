@@ -48,7 +48,7 @@ include_once "header.php";
 
             <a href="users.php" class="back-icon" aria-label="Voltar"><i class="fas fa-arrow-left"></i></a>
             <div class="avatar-wrap">
-                <img src="php/images/<?php echo htmlspecialchars($row['img'], ENT_QUOTES, 'UTF-8')?>" alt="Foto de perfil de <?php echo htmlspecialchars($row['fname'] . ' ' . $row['lname'], ENT_QUOTES, 'UTF-8')?>">
+                <img src="php/images/<?php echo  htmlspecialchars($row['img'], ENT_QUOTES, 'UTF-8')?>" alt="Foto de perfil de <?php echo htmlspecialchars($row['fname'] . ' ' . $row['lname'], ENT_QUOTES, 'UTF-8')?>">
                 <span class="online-dot"></span>
             </div>
             <div class="details">

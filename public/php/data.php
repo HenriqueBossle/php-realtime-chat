@@ -12,11 +12,6 @@ if (!isset($outgoing_id)) {
     $outgoing_id = (int) ($_SESSION['unique_id'] ?? 0);
 }
 
-if (!isset($query)) {
-    $userRepository = new UserRepository($conn);
-    $query = $userRepository->findAllExcept($outgoing_id);
-}
-
 if (!isset($messageRepository)) {
     $messageRepository = new MessageRepository($conn);
 }
@@ -25,7 +20,7 @@ if (!isset($output)) {
     $output = '';
 }
 
-while ($row = mysqli_fetch_assoc($query)) {
+foreach (($users ?? []) as $row) {
     $unique_id = (int) $row['unique_id'];
     $lastMessage = $messageRepository->findLastMessage($unique_id, $outgoing_id);
 

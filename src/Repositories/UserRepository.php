@@ -8,7 +8,7 @@ class UserRepository
         private \mysqli $conn
     ) {}
 
-    public function findAllExcept(int $userId): \mysqli_result
+    public function findAllExcept(int $userId): array
     {
         $stmt = mysqli_prepare(
             $this->conn,
@@ -21,6 +21,14 @@ class UserRepository
 
         mysqli_stmt_execute($stmt);
 
-        return mysqli_stmt_get_result($stmt);
+        $result = mysqli_stmt_get_result($stmt);
+
+        $users = [];
+
+        while ($user = mysqli_fetch_assoc($result)) {
+            $users[] = $user;
+        }
+
+        return $users;
     }
 }

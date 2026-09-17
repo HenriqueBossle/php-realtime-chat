@@ -15,42 +15,42 @@
     
     <div class="wrapper">
         <section class="form signup">
-            <header>Realtime chat app</header>
+            <header>Criar <span>conta</span></header>
             <form action="#" method="post" enctype="multipart/form-data" autocomplete="off">
                 <div class="error-text"></div>
                 <div class="name details">
                     <div class="field input">
-                        <label for="fname">First name</label>
-                        <input type="text" name="fname" id="fname" placeholder="First name" required>
+                        <label for="fname">Nome</label>
+                        <input type="text" name="fname" id="fname" placeholder="João" required>
                     </div>
                     <div class="field input">
-                        <label for="lname">Last name</label>
-                        <input type="text" name="lname" id="lname" placeholder="Last name" required>
+                        <label for="lname">Sobrenome</label>
+                        <input type="text" name="lname" id="lname" placeholder="Silva" required>
                     </div>
                 </div>
             
                 <div class="field input">
-                    <label for="email">Email Address</label>
-                    <input type="email" name="email" id="email" placeholder="Enter your email" required>
+                    <label for="email">E-mail</label>
+                    <input type="email" name="email" id="email" placeholder="seuemail@exemplo.com" required>
                 </div>
 
                 <div class="field input">
-                    <label for="password">Password</label>
-                    <input type="password" name="password" id="password" placeholder="Enter new password" required>
-                    <i ></i>
+                    <label for="password">Senha</label>
+                    <input type="password" name="password" id="password" placeholder="Crie uma senha segura" required>
+                    <i></i>
                 </div>
 
                 <div class="field image">
-                    <label for="image">Profile Image</label>
-                    <input type="file" name="image" id="image" accept="image/x-png,image/gif,image/jpeg,image/jpg"  required>
+                    <label for="image">Foto de perfil</label>
+                    <input type="file" name="image" id="image" accept="image/x-png,image/gif,image/jpeg,image/jpg" required>
                 </div>
 
                 <div class="field button">
-                    <input type="submit" name="submit" value="Continue to chat">
+                    <input type="submit" name="submit" value="Criar conta e entrar">
                 </div>
             </form>
 
-            <div class="link">Já tem conta? <a href="login.php">Entrar</a> </div>
+            <div class="link">Já tem uma conta? <a href="login.php">Entrar agora</a></div>
         </section>
     </div>
 

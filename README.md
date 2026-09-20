@@ -5,6 +5,7 @@ Aplicação web de **chat em tempo real desenvolvida com PHP, JavaScript, MySQL 
 O projeto foi utilizado como forma de aprofundar conhecimentos em desenvolvimento web, principalmente em **PHP, manipulação de sessões, banco de dados, requisições assíncronas, organização de código e comunicação entre frontend e backend**.
 
 > 📚 **Origem do projeto:** este projeto teve como ponto de partida um tutorial educativo do youtuber Error Solution. Durante o desenvolvimento, foram realizadas modificações, correções de problemas e melhorias para ampliar o aprendizado e tornar a aplicação mais consistente.
+Link das aulas do projeto original: https://www.youtube.com/watch?v=UdamtabIRtk&list=PLoBGtBK7uqyWWp5Q_ypAZB3biKu1UAh8q
 
 ---
 

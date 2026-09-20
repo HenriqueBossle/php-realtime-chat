@@ -666,22 +666,10 @@ body {
   transform: translateX(3px);
 }
 
-/* status-dot used as icon button in some list items */
+/* Keep the status badge aligned at the end of each user row. */
 .users-list > a > .status-dot {
-  display: grid;
-  width: 32px;
-  height: 32px;
-  margin-left: auto;
-  place-items: center;
-  border-radius: 50%;
-  font-size: 11px;
-  background: var(--accent-subtle);
-  color: var(--accent-from);
-  flex-shrink: 0;
-}
-.users-list > a > .status-dot.offline {
-  background: rgba(71,85,105,.15);
-  color: var(--offline);
+  min-width: 72px;
+  justify-content: center;
 }
 
 /* ── Empty states ─────────────────────────────────────────────── */

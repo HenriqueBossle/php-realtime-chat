@@ -1,4 +1,4 @@
-# 💬 PHP Realtime Chat
+# 💬 Nexus Chat (PHP Realtime Chat)
 
 Aplicação web de **chat em tempo real desenvolvida com PHP, JavaScript, MySQL e AJAX**, criada inicialmente como um projeto de estudo a partir de um mini-curso do youtuber Error Solution e posteriormente expandida com diversas **correções, melhorias e adaptações próprias**.
 
@@ -10,7 +10,7 @@ O projeto foi utilizado como forma de aprofundar conhecimentos em desenvolviment
 
 ## 🚀 Sobre o projeto
 
-O PHP Realtime Chat é uma aplicação de mensagens que permite usuários se cadastrarem, realizarem login e conversarem através de uma interface web.
+O Nexus Chat (PHP Realtime Chat) é uma aplicação de mensagens que permite usuários se cadastrarem, realizarem login e conversarem através de uma interface web.
 
 A comunicação entre o cliente e o servidor utiliza **AJAX**, permitindo atualizar as mensagens e informações da aplicação sem a necessidade de recarregar completamente a página.
 
